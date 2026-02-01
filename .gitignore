@@ -3,6 +3,8 @@
 .RData
 .Ruserdata
 
+# FastQC zip files
+results/fastqc/*.zip
 
 # system
 *.log

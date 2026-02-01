@@ -45,12 +45,29 @@ SRR11856163_2_fastqc.html
 -   Downloaded raw fastq files for SRR11856162 and SRR11856163
 -   Performed quality control using FastQC
 -   Results (HTML reports and ZIP files) are saved in `results/fastqc/`
+-   MultiQC summary report compiled for all samples.
+
+### Quality Control
+
+Observations:
+
+-   Overall per-base quality is high across all samples (green in Per Sequence Quality Scores).
+
+-   No significant adapter contamination detected (green in Adapter Content).
+
+-   GC content deviates slightly from expected (red in Per Sequence GC Content).
+
+-   High sequence duplication levels observed (red in Sequence Duplication Levels).
+
+-   Sequence lengths are as expected (green in Sequence Length Distribution).
+
+-   Reports are available in `results/multiqc/multiqc_report.html`.
 
 ### Next Steps
 
--   Trimming low-quality reads (if needed)
+-   Trimming low-quality reads
 -   Alignment to reference genome
 -   Count matrix generation
 -   Exploratory analysis (VST, PCA)
 -   Differential expression analysis (DESeq2)
--   Clustering and visualization
+-   Clustering and visualization of top DE genes
