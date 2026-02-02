@@ -30,26 +30,50 @@ SRR11856163_1.fastq
 
 SRR11856163_2.fastq
 
-`results/fastqc/`
+### Analysis Workflow
 
-SRR11856162_1_fastqc.html
+-   Raw data download from SRA
 
-SRR11856162_2_fastqc.html
+-   Quality control using FastQC
 
-SRR11856163_1_fastqc.html
+-   Adapter and quality trimming
 
-SRR11856163_2_fastqc.html
+-   Post-trimming quality control
+
+-   Summary report using MultiQC
+
+-   (Planned) Alignment and quantification
+
+-   (Planned) Differential expression analysis using DESeq2
 
 ### Current Status
 
--   Downloaded raw fastq files for SRR11856162 and SRR11856163
--   Performed quality control using FastQC
--   Results (HTML reports and ZIP files) are saved in `results/fastqc/`
--   MultiQC summary report compiled for all samples.
+-   Downloaded raw FASTQ files for `SRR11856162` and `SRR11856163`
+-   Performed initial quality control on raw reads using FastQC
+-   Trimmed low-quality bases and adapter sequences from all reads
+-   Performed FastQC on trimmed reads to assess post-trimming quality
+-   Compiled MultiQC summary reports for both raw and trimmed reads
+-   All results (HTML reports and ZIP files) are saved in `results/fastqc/` and `results/multiqc-trimmed/`
 
 ### Quality Control
 
-Observations:
+#### Reports
+
+FastQC reports (raw and trimmed):
+
+`results/fastqc/`
+
+`results/fastqc-trimmed`
+
+MultiQC summary reports:
+
+`results/multiqc/multiqc_report.html`
+
+`results/multiqc-trimmed/multiqc_report.html`
+
+### Observations
+
+#### Raw reads
 
 -   Overall per-base quality is high across all samples (green in Per Sequence Quality Scores).
 
@@ -61,13 +85,26 @@ Observations:
 
 -   Sequence lengths are as expected (green in Sequence Length Distribution).
 
--   Reports are available in `results/multiqc/multiqc_report.html`.
+#### Trimmed reads
+
+-   Removal of low-quality bases from 3′ ends
+
+-   Variable read length after trimming (expected outcome)
+
+-   Reduction in total read count (\~9%)
+
+-   Improved read quality suitable for downstream alignment and quantification
+
+-   Based on these observations, trimmed reads were selected for downstream analysis.
 
 ### Next Steps
 
--   Trimming low-quality reads
 -   Alignment to reference genome
 -   Count matrix generation
 -   Exploratory analysis (VST, PCA)
 -   Differential expression analysis (DESeq2)
 -   Clustering and visualization of top DE genes
+
+#### Notes
+
+This project is intended as a learning and demonstration pipeline and is not designed to reproduce the full-scale analysis of the original study.

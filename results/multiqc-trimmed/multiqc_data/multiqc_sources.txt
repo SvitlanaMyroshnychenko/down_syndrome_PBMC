@@ -1,0 +1,5 @@
+Module	Section	Sample Name	Source
+FastQC	all_sections	SRR11856162_1_paired	E:\Projects\down_syndrome_PBMC\results\fastqc-trimmed\SRR11856162_1_paired_fastqc.zip
+FastQC	all_sections	SRR11856162_2_paired	E:\Projects\down_syndrome_PBMC\results\fastqc-trimmed\SRR11856162_2_paired_fastqc.zip
+FastQC	all_sections	SRR11856163_1_paired	E:\Projects\down_syndrome_PBMC\results\fastqc-trimmed\SRR11856163_1_paired_fastqc.zip
+FastQC	all_sections	SRR11856163_2_paired	E:\Projects\down_syndrome_PBMC\results\fastqc-trimmed\SRR11856163_2_paired_fastqc.zip

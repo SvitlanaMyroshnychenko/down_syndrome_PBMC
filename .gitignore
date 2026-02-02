@@ -1,12 +1,17 @@
+# R files
 .Rproj.user
 .Rhistory
 .RData
 .Ruserdata
 
-# FastQC zip files
-results/fastqc/*.zip
+# FASTQ and large sequencing files
+*.fastq
+*.fastq.gz
 
-# system
+# ZIP files
+*.zip
+
+# System files
 *.log
 *.tmp
 .DS_Store
