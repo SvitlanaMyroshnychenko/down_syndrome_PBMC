@@ -1,17 +1,30 @@
-# R files
+# === R / RStudio files ===
 .Rproj.user
 .Rhistory
 .RData
 .Ruserdata
 
-# FASTQ and large sequencing files
-*.fastq
-*.fastq.gz
+# === FASTQ and raw sequencing files ===
+data/fastq-raw/*.fastq
+data/fastq-raw/*.fastq.gz
+data/fastq-trimmed/*.fastq
+data/fastq-trimmed/*.fastq.gz
 
-# ZIP files
-*.zip
+# === BAM files from alignment ===
+results/hisat2/*.bam
+results/hisat2/*.bai
 
-# System files
+# === FastQC and MultiQC reports ===
+results/fastqc/*.zip
+results/fastqc-trimmed/*.zip
+results/multiqc/*.zip
+results/multiqc-trimmed/*.zip
+
+# === System / temporary files ===
 *.log
 *.tmp
 .DS_Store
+
+# === Optional: featureCounts temporary files (if any) ===
+results/counts/*.tmp
+
