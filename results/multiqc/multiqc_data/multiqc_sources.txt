@@ -1,5 +1,0 @@
-Module	Section	Sample Name	Source
-FastQC	all_sections	SRR11856162_1	E:\Projects\down_syndrome_PBMC\results\fastqc\SRR11856162_1_fastqc.zip
-FastQC	all_sections	SRR11856162_2	E:\Projects\down_syndrome_PBMC\results\fastqc\SRR11856162_2_fastqc.zip
-FastQC	all_sections	SRR11856163_1	E:\Projects\down_syndrome_PBMC\results\fastqc\SRR11856163_1_fastqc.zip
-FastQC	all_sections	SRR11856163_2	E:\Projects\down_syndrome_PBMC\results\fastqc\SRR11856163_2_fastqc.zip

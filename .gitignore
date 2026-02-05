@@ -4,27 +4,41 @@
 .RData
 .Ruserdata
 
-# === FASTQ and raw sequencing files ===
-data/fastq-raw/*.fastq
-data/fastq-raw/*.fastq.gz
-data/fastq-trimmed/*.fastq
-data/fastq-trimmed/*.fastq.gz
+# === Reference genome & archives ===
+results/reference/*.rar
+#results/reference/README.md
 
-# === BAM files from alignment ===
-results/hisat2/*.bam
-results/hisat2/*.bai
+# === QC archives ===
+*.zip
+*.rar
 
-# === FastQC and MultiQC reports ===
+# === Raw & trimmed sequencing files ===
+data/fastq-raw/
+data/fastq-trimmed/
+
+# === Alignment files ===
+*.bam
+*.bai
+*.sam
+
+# === HISAT2 index ===
+*.ht2
+
+# === Reference genome & annotation ===
+*.fa
+*.fa.gz
+*.gtf
+*.gtf.gz
+
+# === QC reports archives ===
 results/fastqc/*.zip
 results/fastqc-trimmed/*.zip
 results/multiqc/*.zip
 results/multiqc-trimmed/*.zip
 
-# === System / temporary files ===
+# === Logs / temp ===
 *.log
 *.tmp
 .DS_Store
 
-# === Optional: featureCounts temporary files (if any) ===
-results/counts/*.tmp
 
