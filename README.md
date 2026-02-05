@@ -2,135 +2,135 @@
 
 ### Goal
 
-#### Note
+To explore transcriptomic differences between Down Syndrome and healthy PBMC samples using RNA-seq data and a reproducible bioinformatics workflow.
 
-> This project uses public datasets for learning and demonstration purposes only.
+### Note
+
+> This project uses publicly available datasets for learning and demonstration purposes only.
+
+------------------------------------------------------------------------
 
 ### Data
 
-**Source:** [NCBI GEO / SRA](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE151282)\
+**Source:** [NCBI GEO – GSE151282](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE151282)\
 Raw sequencing data available via SRA (SRP264957).
 
 **Project:** GSE151282 / SRP264957
 
 **Data type:** RNA-seq, paired-end, PBMC samples
 
-**Downloaded:** first 2 samples for pilot analysis
+**Selected samples (4 total):**
 
-**Format:** .fastq raw sequencing files
+| SRR         | Condition     | Sex    |
+|-------------|---------------|--------|
+| SRR11856162 | Down syndrome | Male   |
+| SRR11856166 | Down syndrome | Female |
+| SRR11856164 | Healthy       | Male   |
+| SRR11856165 | Healthy       | Female |
 
-#### Raw files
+**Format:** `.fastq.gz` (paired-end, compressed)
+
+------------------------------------------------------------------------
+
+### Raw files
 
 `data/fastq-raw/`
 
-SRR11856162_1.fastq
+SRR11856162_1.fastq.gz\
+SRR11856162_2.fastq.gz
 
-SRR11856162_2.fastq
+SRR11856164_1.fastq.gz\
+SRR11856164_2.fastq.gz
 
-SRR11856163_1.fastq
+SRR11856165_1.fastq.gz\
+SRR11856165_2.fastq.gz
 
-SRR11856163_2.fastq
+SRR11856166_1.fastq.gz\
+SRR11856166_2.fastq.gz
 
 ### Current Status
 
--   Downloaded raw FASTQ files for `SRR11856162` and `SRR11856163`
+-   Downloaded raw FASTQ files for four samples:
 
--   Performed initial quality control on raw reads using FastQC
+    -   `SRR11856162` (Down syndrome)
+    -   `SRR11856166` (Down syndrome)
+    -   `SRR11856164` (Healthy)
+    -   `SRR11856165` (Healthy)
 
--   Trimmed low-quality bases and adapter sequences from all reads
+-   Performed quality control on raw reads using FastQC
 
--   Performed FastQC on trimmed reads to assess post-trimming quality
+-   Generated MultiQC summary report for raw reads\
+    → `results/multiqc-raw/multiqc_report.html`
 
--   Compiled MultiQC summary reports for both raw and trimmed reads
+-   Performed trimming using Trimmomatic (quality + adapter trimming)
 
--   All results (HTML reports and ZIP files) are saved in `results/fastqc/` and `results/multiqc-trimmed/`
+-   Generated FastQC and MultiQC reports for trimmed reads\
+    → `results/multiqc-trimmed/multiqc_report.html`
 
--   Alignment to reference genome (HISAT2)
+-   After comparison of raw vs trimmed reports, trimming did not significaly improve quality metrics.\
+    That's why raw reads were selected for downstream alignment and analysis.
 
-    -- Built HISAT2 index for GRCh38 → `results/reference/GRCh38_index.\*.ht2`
-
-    -- Aligned trimmed reads → SAM files in `results/hisat2/`
-
-    -- Converted SAM → sorted BAM → indexed BAM
-
--   Quantification (featureCounts)
-
-    -- Generated gene-level count matrix → `results/counts/gene_counts.txt`
-
-    -- Summary of read assignment → `results/counts/gene_counts_summary.txt`
-
--   Differential expression analysis using DESeq2 (planned)
-
-    -- Count matrix ready for DESeq2 input
-
--   Next: exploratory analysis (PCA, VST) and identification of DE genes
+------------------------------------------------------------------------
 
 ### Quality Control
 
-#### Reports
+FastQC and MultiQC reports were generated for both raw and trimmed reads.
 
-FastQC reports (raw and trimmed):
+**Reports locations:**
 
-`results/fastqc/`
+-   FastQC: `results/fastqc-raw/` (raw), `results/fastqc-trimmed/` (trimmed)\
+-   MultiQC: `results/multiqc-raw/multiqc_report.html` (raw), `results/multiqc-trimmed/multiqc_report.html` (trimmed)
 
-`results/fastqc-trimmed`
+**Observations:**
 
-MultiQC summary reports:
+-   **Raw reads:**
+    -   Overall per-base quality is high across all samples (green in Per Sequence Quality Scores)\
+    -   No significant adapter contamination detected (green in Adapter Content)\
+    -   GC content deviates slightly from expected (red in Per Sequence GC Content)\
+    -   High sequence duplication levels observed (red in Sequence Duplication Levels)\
+    -   Sequence lengths are uniform at 125 bp (green in Sequence Length Distribution)
+-   **Trimmed reads:**
+    -   Low-quality bases from read ends were removed using Trimmomatic\
+    -   Total read counts reduced by \~5–10% due to trimming\
+    -   Sequence lengths became variable after trimming (expected outcome)\
+    -   Overall, trimming did not significaly improve quality metrics
 
-`results/multiqc/multiqc_report.html`
+**Conclusion:**\
+FastQC and MultiQC reports are available for both raw and trimmed reads. For downstream alignment, quantification and all future analyses, raw paired-end reads will be used.
 
-`results/multiqc-trimmed/multiqc_report.html`
+### Alignment (HISAT2)
 
-#### Quality Control Observations
+-   Downloaded GRCh38 reference genome (Ensembl release 109)
 
-##### Raw reads
+-   Downloaded corresponding GTF annotation file
 
--   Overall per-base quality is high across all samples (green in Per Sequence Quality Scores).
+-   Built HISAT2 index\
+    → `results/reference/GRCh38_index.*.ht2`
 
--   No significant adapter contamination detected (green in Adapter Content).
+-   Aligned raw paired-end reads to reference genome
 
--   GC content deviates slightly from expected (red in Per Sequence GC Content).
+-   Converted SAM → BAM → sorted BAM
 
--   High sequence duplication levels observed (red in Sequence Duplication Levels).
+-   Indexed BAM files
 
--   Sequence lengths are as expected (green in Sequence Length Distribution).
+Final alignment files:\
+→ `results/hisat2/*_sorted.bam`\
+→ `results/hisat2/*_sorted.bam.bai`
 
-##### Trimmed reads
+------------------------------------------------------------------------
 
--   Removal of low-quality bases from 3′ ends
+### Quantification (featureCounts)
 
--   Variable read length after trimming (expected outcome)
+-   Generated gene-level count matrix using exon-based counting
+-   Counted paired-end reads (`--countReadPairs`)
+-   Annotation: `Homo_sapiens.GRCh38.109.gtf`
 
--   Reduction in total read count (\~9%)
+Output files: - Gene count matrix → `results/featurecounts_counts.txt` - Assignment summary → `results/featurecounts_counts.txt.summary`
 
--   Improved read quality suitable for downstream alignment and quantification
-
--   Based on these observations, trimmed reads were selected for downstream analysis.
-
-
-### Count Matrix Notes
-
-Count matrix ready for differential expression analysis with DESeq2. Example summary (from featureCounts):
-
-| Status | results/hisat2/SRR11856162.sorted.bam | results/hisat2/SRR11856163.sorted.bam |
-|------------------------|------------------------|------------------------|
-| Assigned | 26,750,659 | 17,076,077 |
-| Unassigned_Unmapped | 1,523,505 | 1,470,596 |
-| Unassigned_Read_Type | 0 | 0 |
-| Unassigned_Singleton | 0 | 0 |
-| Unassigned_MappingQuality | 0 | 0 |
-| Unassigned_Chimera | 0 | 0 |
-| Unassigned_FragmentLength | 0 | 0 |
-| Unassigned_Duplicate | 0 | 0 |
-| Unassigned_MultiMapping | 21,685,046 | 13,248,324 |
-| Unassigned_Secondary | 0 | 0 |
-| Unassigned_NonSplit | 0 | 0 |
-| Unassigned_NoFeatures | 5,847,215 | 3,360,593 |
-| Unassigned_Overlapping_Length | 0 | 0 |
-| Unassigned_Ambiguity | 7,227,260 | 5,343,303 |
+------------------------------------------------------------------------
 
 ### Next Steps
 
--   Perform DESeq2 analysis to identify differentially expressed genes
-
--   Exploratory analysis: PCA, clustering, VST transformation
+-   Variance stabilizing transformation (VST)
+-   PCA for sample clustering
+-   Differential expression analysis using DESeq2
