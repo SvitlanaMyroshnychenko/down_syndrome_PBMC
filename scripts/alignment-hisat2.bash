@@ -6,7 +6,6 @@ cd /mnt/e/Projects/down_syndrome_PBMC
 
 # 1. REFERENCE PREPARATION
 
-# Create reference folder
 mkdir -p results/reference
 cd results/reference
 
@@ -46,7 +45,8 @@ done
 
 # 4. FEATURECOUNTS
 
-featureCounts -T 4 -p --countReadPairs -t exon -g gene_id \
+featureCounts -T 4 -p -t exon -g gene_id \
 -a results/reference/Homo_sapiens.GRCh38.109.gtf \
--o results/featurecounts_counts.txt \
+-o results/counts/featurecounts_counts.txt \
 results/hisat2/*_sorted.bam
+

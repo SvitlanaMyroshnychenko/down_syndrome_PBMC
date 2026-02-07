@@ -23,3 +23,15 @@ fastqc data/fastq-trimmed/*_paired.fastq.gz -o results/fastqc-trimmed
 
 # MultiQC for trimmed reads
 multiqc results/fastqc-trimmed -o results/multiqc-trimmed
+
+#### TRIMMOMATIC
+
+java -jar E:\Programs\Trimmomatic\trimmomatic-0.40.jar PE -threads 4 ^
+data\fastq-raw\SRR11856166_1.fastq.gz ^
+data\fastq-raw\SRR11856166_2.fastq.gz ^
+data\fastq-trimmed\SRR11856166_1_paired.fastq.gz ^
+data\fastq-trimmed\SRR11856166_1_unpaired.fastq.gz ^
+data\fastq-trimmed\SRR11856166_2_paired.fastq.gz ^
+data\fastq-trimmed\SRR11856166_2_unpaired.fastq.gz ^
+ILLUMINACLIP:TruSeq3-PE.fa:2:30:10 ^
+LEADING:3 TRAILING:3 SLIDINGWINDOW:4:20 MINLEN:36

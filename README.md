@@ -84,19 +84,18 @@ FastQC and MultiQC reports were generated for both raw and trimmed reads.
 **Observations:**
 
 -   **Raw reads:**
-    -   Overall per-base quality is high across all samples (green in Per Sequence Quality Scores)\
-    -   No significant adapter contamination detected (green in Adapter Content)\
-    -   GC content deviates slightly from expected (red in Per Sequence GC Content)\
-    -   High sequence duplication levels observed (red in Sequence Duplication Levels)\
+    -   Overall per-base quality is high across all samples (green in Per Sequence Quality Scores)
+    -   No significant adapter contamination detected (green in Adapter Content)
+    -   GC content deviates slightly from expected (red in Per Sequence GC Content)
+    -   High sequence duplication levels observed (red in Sequence Duplication Levels)
     -   Sequence lengths are uniform at 125 bp (green in Sequence Length Distribution)
 -   **Trimmed reads:**
-    -   Low-quality bases from read ends were removed using Trimmomatic\
-    -   Total read counts reduced by \~5–10% due to trimming\
-    -   Sequence lengths became variable after trimming (expected outcome)\
+    -   Low-quality bases from read ends were removed using Trimmomatic
+    -   Total read counts reduced by \~5–10% due to trimming
+    -   Sequence lengths became variable after trimming (expected outcome)
     -   Overall, trimming did not significaly improve quality metrics
 
-**Conclusion:**\
-FastQC and MultiQC reports are available for both raw and trimmed reads. For downstream alignment, quantification and all future analyses, raw paired-end reads will be used.
+**Conclusion:** FastQC and MultiQC reports are available for both raw and trimmed reads. For downstream alignment, quantification and all future analyses, raw paired-end reads will be used.
 
 ### Alignment (HISAT2)
 
