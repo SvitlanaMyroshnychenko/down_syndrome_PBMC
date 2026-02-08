@@ -1,135 +1,39 @@
-## Down Syndrome PBMC RNA-seq Analysis
+# Down Syndrome PBMC RNA-seq Analysis
 
-### Goal
+### Project Goal
 
-To explore transcriptomic differences between Down Syndrome and healthy PBMC samples using RNA-seq data and a reproducible bioinformatics workflow.
-
-### Note
-
-> This project uses publicly available datasets for learning and demonstration purposes only.
+The primary objective of this project was to implement an end-to-end RNA-seq bioinformatics pipeline to identify transcriptomic signatures in Peripheral Blood Mononuclear Cells (PBMC) of individuals with **Down Syndrome**.
 
 ------------------------------------------------------------------------
 
-### Data
+### Dataset Summary
 
-**Source:** [NCBI GEO – GSE151282](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE151282)\
-Raw sequencing data available via SRA (SRP264957).
+-   **Source:** [NCBI GEO – GSE151282](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE151282)
+-   **Design:** 4 paired-end samples, balanced by condition and sex.
+-   **Organism:** *Homo sapiens* (GRCh38.109)
 
-**Project:** GSE151282 / SRP264957
-
-**Data type:** RNA-seq, paired-end, PBMC samples
-
-**Selected samples (4 total):**
-
-| SRR         | Condition     | Sex    |
+| Sample ID   | Condition     | Sex    |
 |-------------|---------------|--------|
-| SRR11856162 | Down syndrome | Male   |
-| SRR11856166 | Down syndrome | Female |
+| SRR11856162 | Down Syndrome | Male   |
+| SRR11856166 | Down Syndrome | Female |
 | SRR11856164 | Healthy       | Male   |
 | SRR11856165 | Healthy       | Female |
 
-**Format:** `.fastq.gz` (paired-end, compressed)
+------------------------------------------------------------------------
+
+### Bioinformatics Pipeline
+
+1.  **Quality Control:** `FastQC` & `MultiQC`. Raw reads showed high quality, eliminating the need for aggressive trimming.
+2.  **Alignment:** `HISAT2`. Splice-aware mapping to the GRCh38 human primary assembly.
+3.  **Quantification:** `featureCounts` (Subread package). Gene-level counting based on Ensembl GTF annotation.
+4.  **Differential Expression:** `DESeq2` (R-based). Statistical modeling, VST transformation and p-value adjustment.
 
 ------------------------------------------------------------------------
 
-### Raw files
+### Key Findings
 
-`data/fastq-raw/`
-
-SRR11856162_1.fastq.gz\
-SRR11856162_2.fastq.gz
-
-SRR11856164_1.fastq.gz\
-SRR11856164_2.fastq.gz
-
-SRR11856165_1.fastq.gz\
-SRR11856165_2.fastq.gz
-
-SRR11856166_1.fastq.gz\
-SRR11856166_2.fastq.gz
-
-### Current Status
-
--   Downloaded raw FASTQ files for four samples:
-
-    -   `SRR11856162` (Down syndrome)
-    -   `SRR11856166` (Down syndrome)
-    -   `SRR11856164` (Healthy)
-    -   `SRR11856165` (Healthy)
-
--   Performed quality control on raw reads using FastQC
-
--   Generated MultiQC summary report for raw reads\
-    → `results/multiqc-raw/multiqc_report.html`
-
--   Performed trimming using Trimmomatic (quality + adapter trimming)
-
--   Generated FastQC and MultiQC reports for trimmed reads\
-    → `results/multiqc-trimmed/multiqc_report.html`
-
--   After comparison of raw vs trimmed reports, trimming did not significaly improve quality metrics.\
-    That's why raw reads were selected for downstream alignment and analysis.
+-   **Transcriptomic Separation.** PCA analysis (PC1: 55.5% variance) and Hierarchical Clustering show a clear, distinct separation between Down Syndrome and Healthy groups.
+-   **Chromosome 21 Validation.** Significant up-regulation of the MX1 gene was detected. Being located on Chromosome 21, its over-expression serves as a direct internal validation of the Trisomy 21 gene dosage effect.
+-   **Biomarkers.** Identified high-confidence Differentially Expressed Genes (DEGs) including NRG1 (neurodevelopmental signaling) and HBG1 (hemoglobin subunit gamma-1).
 
 ------------------------------------------------------------------------
-
-### Quality Control
-
-FastQC and MultiQC reports were generated for both raw and trimmed reads.
-
-**Reports locations:**
-
--   FastQC: `results/fastqc-raw/` (raw), `results/fastqc-trimmed/` (trimmed)\
--   MultiQC: `results/multiqc-raw/multiqc_report.html` (raw), `results/multiqc-trimmed/multiqc_report.html` (trimmed)
-
-**Observations:**
-
--   **Raw reads:**
-    -   Overall per-base quality is high across all samples (green in Per Sequence Quality Scores)
-    -   No significant adapter contamination detected (green in Adapter Content)
-    -   GC content deviates slightly from expected (red in Per Sequence GC Content)
-    -   High sequence duplication levels observed (red in Sequence Duplication Levels)
-    -   Sequence lengths are uniform at 125 bp (green in Sequence Length Distribution)
--   **Trimmed reads:**
-    -   Low-quality bases from read ends were removed using Trimmomatic
-    -   Total read counts reduced by \~5–10% due to trimming
-    -   Sequence lengths became variable after trimming (expected outcome)
-    -   Overall, trimming did not significaly improve quality metrics
-
-**Conclusion:** FastQC and MultiQC reports are available for both raw and trimmed reads. For downstream alignment, quantification and all future analyses, raw paired-end reads will be used.
-
-### Alignment (HISAT2)
-
--   Downloaded GRCh38 reference genome (Ensembl release 109)
-
--   Downloaded corresponding GTF annotation file
-
--   Built HISAT2 index\
-    → `results/reference/GRCh38_index.*.ht2`
-
--   Aligned raw paired-end reads to reference genome
-
--   Converted SAM → BAM → sorted BAM
-
--   Indexed BAM files
-
-Final alignment files:\
-→ `results/hisat2/*_sorted.bam`\
-→ `results/hisat2/*_sorted.bam.bai`
-
-------------------------------------------------------------------------
-
-### Quantification (featureCounts)
-
--   Generated gene-level count matrix using exon-based counting
--   Counted paired-end reads (`--countReadPairs`)
--   Annotation: `Homo_sapiens.GRCh38.109.gtf`
-
-Output files: - Gene count matrix → `results/featurecounts_counts.txt` - Assignment summary → `results/featurecounts_counts.txt.summary`
-
-------------------------------------------------------------------------
-
-### Next Steps
-
--   Variance stabilizing transformation (VST)
--   PCA for sample clustering
--   Differential expression analysis using DESeq2
